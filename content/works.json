@@ -1,6 +1,63 @@
 {
   "items": [
     {
+      "title": "Elafine Demos",
+      "category": "social",
+      "label": "Social Media Post",
+      "featured": true,
+      "placeholder": false,
+      "cover": "images/uploads/20261101174231-new-project-rpv4.webp",
+      "gallery": [
+        "images/uploads/20261101174236-new-project-wiep.webp",
+        "images/uploads/20261101174236-new-project-q4or.webp"
+      ],
+      "link": "",
+      "tools": "Figma",
+      "role": "Graphic Designer & Copywriter",
+      "client": "Elafine",
+      "client_logo": "",
+      "duration": "",
+      "description": "Created a premium social media campaign for Elafine, a product visualization and motion design service. The project positions high-end product demos as a stronger alternative to basic screen recordings, using clear before-and-after storytelling, polished interface mockups, bold typography, and a refined lavender-and-white visual system. I designed promotional creatives that communicate the value of premium presentation, flexible packages, and fast turnaround while keeping the message clean, modern, and conversion-focused.\n"
+    },
+    {
+      "title": "Trend Track Social Media Design",
+      "category": "social",
+      "label": "Social Media Post",
+      "featured": true,
+      "placeholder": false,
+      "cover": "images/uploads/20261101174034-trend-track-social-media-design-x2lm.webp",
+      "gallery": [
+        "images/uploads/20261101174038-trend-track-social-media-design-wqc2.webp",
+        "images/uploads/20261101174038-trend-track-social-media-design-0f9d.webp"
+      ],
+      "link": "",
+      "tools": "Figma",
+      "role": "Graphic Designer & Copywriter",
+      "client": "Trend Track",
+      "client_logo": "images/uploads/20261101174216-trend-track-social-media-design-ewg9.webp",
+      "duration": "",
+      "description": "Designed a conversion-focused social media campaign for Trendtrack, an e-commerce intelligence platform. I transformed its analytics dashboard, customer insights, and growth data into bold promotional creatives for Instagram and digital marketing. The visual system combines a dark interface, neon green accents, clear typography, product mockups, testimonials, and strong CTAs to communicate credibility and drive discovery. Delivered polished, platform-ready visuals that position Trendtrack as a trusted tool for e-commerce professionals.\n"
+    },
+    {
+      "title": "Financial Growth",
+      "category": "presentation",
+      "label": "Presentation",
+      "featured": true,
+      "placeholder": false,
+      "cover": "images/uploads/20261101173911-financial-growth-klid.webp",
+      "gallery": [
+        "images/uploads/20261101173915-financial-growth-bu5r.webp",
+        "images/uploads/20261101173915-financial-growth-1mya.webp"
+      ],
+      "link": "",
+      "tools": "PowerPoint",
+      "role": "Graphic Designer",
+      "client": "",
+      "client_logo": "",
+      "duration": "",
+      "description": "Designed a slide presentation on strategic capital allocation and financial growth. The deck covers finance automation, investment allocation, risk oversight, and projected portfolio value. Structured layouts, prominent metrics, and clear visual hierarchy make complex financial concepts easier to follow. Created for executive briefings and stakeholder discussions, with a focus on communicating strategy through concise, engaging slides.\n"
+    },
+    {
       "title": "Investment Portfolio Performance",
       "category": "presentation",
       "label": "Pitch Deck",
