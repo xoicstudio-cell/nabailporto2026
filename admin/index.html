@@ -156,6 +156,7 @@ textarea { min-height: 110px; resize: vertical; line-height: 1.5; }
 <main class="wrap" id="app" hidden>
   <div class="tabs" role="tablist">
     <button type="button" role="tab" data-tab="works" aria-selected="true">Work <span id="n-works"></span></button>
+    <button type="button" role="tab" data-tab="hero" aria-selected="false">Hero images <span id="n-hero"></span></button>
     <button type="button" role="tab" data-tab="profile" aria-selected="false">Profile &amp; contact</button>
     <button type="button" role="tab" data-tab="certs" aria-selected="false">Certifications <span id="n-certs"></span></button>
   </div>
@@ -168,6 +169,14 @@ textarea { min-height: 110px; resize: vertical; line-height: 1.5; }
       <ol class="list" id="work-list"></ol>
     </div>
     <div class="panel" id="work-editor"></div>
+  </section>
+
+  <!-- HERO IMAGES -->
+  <section id="tab-hero" hidden>
+    <div class="panel">
+      <div class="panel-head"><h2>Hero images</h2><span class="label">Shown only in the hero</span></div>
+      <div class="form" id="hero-form"></div>
+    </div>
   </section>
 
   <!-- PROFILE -->
@@ -195,14 +204,14 @@ textarea { min-height: 110px; resize: vertical; line-height: 1.5; }
   /* ========================================= */
 
   var API = 'https://api.github.com/repos/' + OWNER + '/' + REPO;
-  var FILES = { profile: 'content/profile.json', works: 'content/works.json', certs: 'content/certifications.json' };
+  var FILES = { profile: 'content/profile.json', works: 'content/works.json', certs: 'content/certifications.json', hero: 'content/hero.json' };
   var CATS = [['presentation', 'Presentation'], ['social', 'Social media'], ['brand', 'Brand & print']];
   var PLATFORMS = ['', 'Envato Market', 'Behance', 'Instagram', 'Other'];
   var CERT_LOGOS = ['Google', 'Microsoft', 'Coursera', 'Adobe', 'CalArts'];
 
   var token = '', branch = 'main';
-  var data = { profile: {}, works: [], certs: [] };
-  var saved = { profile: '', works: '', certs: '' };   /* last published JSON, to detect changes */
+  var data = { profile: {}, works: [], certs: [], hero: { images: [] } };
+  var saved = { profile: '', works: '', certs: '', hero: '' };   /* last published JSON, to detect changes */
   var pending = {};                                      /* new images: path -> { b64, url } */
   var selWork = 0, selCert = 0;
 
@@ -257,11 +266,12 @@ textarea { min-height: 110px; resize: vertical; line-height: 1.5; }
     $('login-btn').disabled = true; $('login-msg').innerHTML = '';
     return gh('').then(function (repo) {
       branch = repo.default_branch || 'main';
-      return Promise.all([readJSON(FILES.profile), readJSON(FILES.works), readJSON(FILES.certs)]);
+      return Promise.all([readJSON(FILES.profile), readJSON(FILES.works), readJSON(FILES.certs), readJSON(FILES.hero)]);
     }).then(function (r) {
       data.profile = r[0] || {};
       data.works = (r[1] && r[1].items) || [];
       data.certs = (r[2] && r[2].items) || [];
+      data.hero = { images: (r[3] && r[3].images) || [] };
       snapshot();
       store('pa_token', remember ? token : null);
       $('login-view').hidden = true; $('app').hidden = false;
@@ -277,7 +287,7 @@ textarea { min-height: 110px; resize: vertical; line-height: 1.5; }
   var savedToken = read('pa_token'); if (savedToken) { $('token').value = savedToken; signIn(savedToken, true); }
 
   /* ---------- change tracking ---------- */
-  function ser() { return { profile: JSON.stringify(data.profile, null, 2), works: JSON.stringify({ items: data.works }, null, 2), certs: JSON.stringify({ items: data.certs }, null, 2) }; }
+  function ser() { return { profile: JSON.stringify(data.profile, null, 2), works: JSON.stringify({ items: data.works }, null, 2), certs: JSON.stringify({ items: data.certs }, null, 2), hero: JSON.stringify({ images: data.hero.images }, null, 2) }; }
   function snapshot() { saved = ser(); }
   function changedFiles() { var s = ser(); return Object.keys(s).filter(function (k) { return s[k] !== saved[k]; }); }
   function refreshState() {
@@ -285,7 +295,7 @@ textarea { min-height: 110px; resize: vertical; line-height: 1.5; }
     p.className = 'pill ' + (n ? 'dirty' : 'ok');
     $('state-t').textContent = n ? 'Unpublished changes' : 'All published';
     $('publish').disabled = !n;
-    $('n-works').textContent = data.works.length; $('n-certs').textContent = data.certs.length;
+    $('n-works').textContent = data.works.length; $('n-certs').textContent = data.certs.length; $('n-hero').textContent = data.hero.images.length;
     var f = data.works.filter(function (w) { return w.featured; }).length, fw = $('feat-warn');
     fw.hidden = f <= 6; fw.textContent = f + ' projects are marked Featured. The homepage shows the first 6 in list order.';
   }
@@ -438,6 +448,25 @@ textarea { min-height: 110px; resize: vertical; line-height: 1.5; }
     var t = $('work-editor').querySelector('[data-k="title"]'); if (t) { t.focus(); t.select(); }
   });
 
+  /* ---------- HERO IMAGES ---------- */
+  function renderHeroImgs() {
+    var el = $('hero-form'), imgs = data.hero.images;
+    el.innerHTML = '<p class="msg warn" style="margin:0">These images float after the cursor in the hero. Upload as many as you like; 16:10 slides look best. Drag to reorder. When this list is empty, the hero uses your project images instead.</p>' +
+      '<div class="imgs" id="hero-imgs">' + imgs.map(function (g, i) { return '<div draggable="true" data-hi="' + i + '" style="cursor:grab">' + imgTile(g, 'h' + i) + '</div>'; }).join('') + dropZone('hero', 'Add hero images', true) + '</div>';
+    wireDrops(el, function (k, files) {
+      Promise.all(files.map(function (f) { return prepImage(f, 'hero'); })).then(function (paths) { data.hero.images = imgs.concat(paths); renderHeroImgs(); refreshState(); })
+        .catch(function () { toast('One of the images could not be read. Try JPG, PNG or WebP.', 'bad'); });
+    });
+    el.querySelectorAll('[data-remove]').forEach(function (b) { b.addEventListener('click', function (e) { e.stopPropagation(); imgs.splice(+b.getAttribute('data-remove').slice(1), 1); renderHeroImgs(); refreshState(); }); });
+    var from = null;
+    el.querySelectorAll('[data-hi]').forEach(function (t) {
+      var i = +t.getAttribute('data-hi');
+      t.addEventListener('dragstart', function () { from = i; });
+      t.addEventListener('dragover', function (e) { e.preventDefault(); });
+      t.addEventListener('drop', function (e) { e.preventDefault(); if (from !== null && from !== i) { move(imgs, from, i); renderHeroImgs(); refreshState(); } from = null; });
+    });
+  }
+
   /* ---------- PROFILE ---------- */
   function renderProfile() {
     var p = data.profile, el = $('profile-form');
@@ -489,10 +518,10 @@ textarea { min-height: 110px; resize: vertical; line-height: 1.5; }
   document.querySelectorAll('[data-tab]').forEach(function (b) {
     b.addEventListener('click', function () {
       document.querySelectorAll('[data-tab]').forEach(function (x) { x.setAttribute('aria-selected', x === b ? 'true' : 'false'); });
-      ['works', 'profile', 'certs'].forEach(function (t) { $('tab-' + t).hidden = t !== b.getAttribute('data-tab'); });
+      ['works', 'hero', 'profile', 'certs'].forEach(function (t) { $('tab-' + t).hidden = t !== b.getAttribute('data-tab'); });
     });
   });
-  function renderAll() { renderWorkList(); renderWorkEditor(); renderProfile(); renderCertList(); renderCertEditor(); }
+  function renderAll() { renderWorkList(); renderWorkEditor(); renderHeroImgs(); renderProfile(); renderCertList(); renderCertEditor(); }
 
   /* ---------- publish: one commit with every changed file ---------- */
   function usedImages() {
@@ -516,7 +545,7 @@ textarea { min-height: 110px; resize: vertical; line-height: 1.5; }
       }));
       return Promise.all(jobs).then(function () { return gh('/git/trees', { method: 'POST', body: { base_tree: commit.tree.sha, tree: entries } }); });
     }).then(function (tree) {
-      var names = { profile: 'profile', works: 'work', certs: 'certifications' };
+      var names = { profile: 'profile', works: 'work', certs: 'certifications', hero: 'hero images' };
       return gh('/git/commits', { method: 'POST', body: { message: 'Update ' + files.map(function (k) { return names[k]; }).join(', ') + (imgs.length ? ' (+' + imgs.length + ' image' + (imgs.length > 1 ? 's' : '') + ')' : '') + ' from admin', tree: tree.sha, parents: [head] } });
     }).then(function (c) {
       return gh('/git/refs/heads/' + encodeURIComponent(branch), { method: 'PATCH', body: { sha: c.sha } });
