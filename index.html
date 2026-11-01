@@ -104,7 +104,12 @@ button { font: inherit; color: inherit; }
 .hero-title .acc { color: var(--orange); }
 .hero-stage { position: relative; margin-top: clamp(-8px, -1vw, 0px); height: clamp(280px, 34vw, 520px); display: flex; justify-content: center; align-items: flex-end; }
 .me { height: 100%; display: flex; align-items: flex-end; position: relative; z-index: 1; }
-.me img { height: 100%; width: auto; max-width: none; display: block; object-fit: contain; filter: drop-shadow(0 30px 60px rgba(0, 0, 0, .5)); }
+.me img { position: relative; z-index: 1; height: 100%; width: auto; max-width: none; display: block; object-fit: contain;
+  filter: brightness(.9) contrast(1.04) saturate(.92);
+  -webkit-mask-image: linear-gradient(to bottom, #000 55%, rgba(0, 0, 0, .55) 80%, transparent 100%), linear-gradient(to right, transparent 0%, #000 22%, #000 78%, transparent 100%);
+  -webkit-mask-composite: source-in; mask-image: linear-gradient(to bottom, #000 55%, rgba(0, 0, 0, .55) 80%, transparent 100%), linear-gradient(to right, transparent 0%, #000 22%, #000 78%, transparent 100%); mask-composite: intersect; }
+/* soft warm backlight so the cut-out sits in the scene */
+.me::before { content: ""; position: absolute; left: 50%; top: 8%; width: 120%; aspect-ratio: 1; transform: translateX(-50%); border-radius: 50%; background: radial-gradient(closest-side, rgba(249, 59, 21, .16), rgba(249, 59, 21, .05) 55%, transparent 75%); z-index: 0; pointer-events: none; }
 .me .ph { height: 86%; aspect-ratio: 4 / 5; border-radius: var(--r-lg); border: 1px dashed var(--night-line); display: grid; place-items: center; color: var(--night-muted); font-size: var(--t-sm); }
 /* floating work chips */
 .fchip { all: unset; box-sizing: border-box; cursor: pointer; position: absolute; z-index: 4; width: clamp(120px, 13vw, 190px); padding: 6px; border-radius: var(--r); background: rgba(250, 247, 243, .06); border: 1px solid var(--night-line); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); transition: transform .3s ease, border-color .3s ease, background-color .3s ease; animation: bob 7s ease-in-out infinite; animation-delay: var(--d, 0s); }
