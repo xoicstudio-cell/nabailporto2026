@@ -87,7 +87,7 @@ button { font: inherit; color: inherit; }
 .nav ul { display: none; gap: 30px; list-style: none; margin: 0; padding: 0; font-size: var(--t-sm); }
 .nav ul a { text-decoration: none; color: var(--night-muted); transition: color .2s ease; }
 .nav ul a:hover { color: var(--night-fg); }
-@media (min-width: 800px) { .nav ul { display: flex; } }
+@media (min-width: 800px) { .nav { display: grid; grid-template-columns: 1fr auto 1fr; } .nav ul { display: flex; } .nav .brand { justify-self: start; } .nav-r { justify-self: end; } }
 .nav-r { display: flex; gap: 8px; align-items: center; }
 .theme-btn { width: 42px; height: 42px; border-radius: var(--r); border: 1px solid var(--night-line); background: transparent; color: var(--night-fg); cursor: pointer; display: grid; place-items: center; }
 .theme-btn:hover { border-color: var(--night-fg); }
