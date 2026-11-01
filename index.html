@@ -107,7 +107,7 @@ button { font: inherit; color: inherit; }
 .me img { height: 100%; width: auto; max-width: none; display: block; object-fit: contain; filter: drop-shadow(0 30px 60px rgba(0, 0, 0, .5)); }
 .me .ph { height: 86%; aspect-ratio: 4 / 5; border-radius: var(--r-lg); border: 1px dashed var(--night-line); display: grid; place-items: center; color: var(--night-muted); font-size: var(--t-sm); }
 /* floating work chips */
-.fchip { all: unset; box-sizing: border-box; cursor: pointer; position: absolute; z-index: 2; width: clamp(120px, 13vw, 190px); padding: 6px; border-radius: var(--r); background: rgba(250, 247, 243, .06); border: 1px solid var(--night-line); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); transition: transform .3s ease, border-color .3s ease, background-color .3s ease; animation: bob 7s ease-in-out infinite; animation-delay: var(--d, 0s); }
+.fchip { all: unset; box-sizing: border-box; cursor: pointer; position: absolute; z-index: 4; width: clamp(120px, 13vw, 190px); padding: 6px; border-radius: var(--r); background: rgba(250, 247, 243, .06); border: 1px solid var(--night-line); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); transition: transform .3s ease, border-color .3s ease, background-color .3s ease; animation: bob 7s ease-in-out infinite; animation-delay: var(--d, 0s); }
 .fchip:hover, .fchip:focus-visible { border-color: rgba(250, 247, 243, .45); background: rgba(250, 247, 243, .12); }
 .fchip i { display: grid; place-items: center; aspect-ratio: 4 / 3; border-radius: 3px; overflow: hidden; background: var(--night-2); }
 .fchip i img { width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -116,11 +116,10 @@ button { font: inherit; color: inherit; }
 @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 @media (max-width: 759px) { .fchip { display: none; } .fchip:nth-of-type(1) { display: block; width: 104px; top: 6% !important; left: 0 !important; } }
 /* name tag floating over the photo */
-.me-tag { position: absolute; left: 50%; bottom: clamp(16px, 4vw, 48px); transform: translateX(-50%); z-index: 3; text-align: center; padding: 12px 18px; border-radius: var(--r); background: rgba(18, 17, 16, .45); border: 1px solid rgba(250, 247, 243, .18); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); white-space: nowrap; animation: tagbob 6s ease-in-out infinite; }
-.me-tag strong { display: block; font: 500 var(--t-base)/1.25 var(--f); letter-spacing: -.01em; color: var(--night-fg); }
-.me-tag span { display: block; margin-top: 2px; font: 500 var(--t-xs)/1.4 var(--f); letter-spacing: .1em; text-transform: uppercase; color: var(--night-muted); }
-@keyframes tagbob { 0%, 100% { transform: translate(-50%, 0); } 50% { transform: translate(-50%, -6px); } }
-@media (prefers-reduced-motion: reduce) { .me-tag { animation: none; } }
+.hero-stage::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 42%; z-index: 2; pointer-events: none; background: linear-gradient(to bottom, transparent, rgba(18, 17, 16, .7) 55%, var(--night)); }
+.me-tag { position: absolute; left: 50%; bottom: clamp(14px, 3vh, 36px); transform: translateX(-50%); z-index: 3; text-align: center; white-space: nowrap; text-shadow: 0 2px 18px rgba(0, 0, 0, .6); }
+.me-tag strong { display: block; font: 600 clamp(1.25rem, .9rem + 1.3vw, 2rem)/1.15 var(--f); letter-spacing: -.03em; color: var(--night-fg); }
+.me-tag span { display: block; margin-top: 6px; font: 500 var(--t-sm)/1.4 var(--f); letter-spacing: .12em; text-transform: uppercase; color: var(--night-muted); }
 /* cursor image trail */
 .trail { position: absolute; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
 .trail-img { position: absolute; left: 0; top: 0; width: clamp(150px, 14vw, 210px); aspect-ratio: 16 / 10; transform: translate3d(var(--x, 0px), var(--y, 0px), 0) translate(-50%, -50%); pointer-events: none; }
@@ -974,6 +973,7 @@ dialog:fullscreen { width: 100%; height: 100%; border: 0; border-radius: 0; }
   /* ---------- views: home and #all-work ---------- */
   var topBand = document.getElementById('top-band'), home = document.getElementById('top'), archive = document.getElementById('archive');
   function route() {
+    if (location.hash === '#top' && history.replaceState) history.replaceState(null, '', location.pathname + location.search);
     var arch = location.hash === '#all-work';
     home.hidden = arch; archive.hidden = !arch;
     document.getElementById('hero').hidden = arch;
