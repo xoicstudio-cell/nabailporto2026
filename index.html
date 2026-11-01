@@ -148,6 +148,20 @@ button { font: inherit; color: inherit; }
 @keyframes marquee { to { transform: translateX(-50%); } }
 @media (prefers-reduced-motion: reduce) { .logo-track { animation: none; flex-wrap: wrap; width: auto; justify-content: center; } .logo-set + .logo-set { display: none; } .logo-row { -webkit-mask-image: none; mask-image: none; } .logo-set { flex-wrap: wrap; justify-content: center; padding: 0; } }
 
+/* desktop: hero, name, intro and tool logos all fit in the first screen */
+@media (min-width: 900px) and (min-height: 600px) {
+  .top { height: 100vh; height: 100svh; min-height: 600px; display: flex; flex-direction: column; }
+  .top > .nav, .top > .hero { width: 100%; }
+  .fchip { width: clamp(110px, min(13vw, 19vh), 190px); }
+  .nav { padding-block: 14px; }
+  .hero { flex: 1; min-height: 0; display: flex; flex-direction: column; padding-top: clamp(4px, 1.6vh, 20px); }
+  .hero-head { gap: clamp(10px, 1.8vh, 20px); }
+  .hero-title { font-size: clamp(2.6rem, min(5.4vw, 8.4vh), 6.2rem); max-width: 18ch; }
+  .hero-stage { flex: 1; height: auto; min-height: 180px; margin-top: clamp(4px, 1vh, 12px); }
+  .hero-foot { padding-block: clamp(12px, 1.8vh, 20px); }
+  .logos { padding-block: clamp(10px, 1.6vh, 16px) clamp(12px, 2vh, 22px); gap: clamp(8px, 1.2vh, 12px); }
+}
+
 /* hero load animation */
 @media (prefers-reduced-motion: no-preference) {
   .hero-title .w { animation: rise .9s cubic-bezier(.2, .7, .2, 1) both; animation-delay: calc(var(--i) * 60ms + 80ms); }
