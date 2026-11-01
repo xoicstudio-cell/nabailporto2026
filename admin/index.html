@@ -451,7 +451,7 @@ textarea { min-height: 110px; resize: vertical; line-height: 1.5; }
   /* ---------- HERO IMAGES ---------- */
   function renderHeroImgs() {
     var el = $('hero-form'), imgs = data.hero.images;
-    el.innerHTML = '<p class="msg warn" style="margin:0">These images float after the cursor in the hero. Upload as many as you like; 16:10 slides look best. Drag to reorder. When this list is empty, the hero uses your project images instead.</p>' +
+    el.innerHTML = '<p class="msg warn" style="margin:0">These images float after the cursor in the hero. Upload as many as you like; 16:9 slides look best (other sizes are cropped to 16:9). Drag to reorder. When this list is empty, the hero uses your project images instead.</p>' +
       '<div class="toggles" style="align-items:center">' + fCheck('random', 'Show in random order on the website (new order for every visitor)', data.hero.random) +
       '<button type="button" class="btn sm" id="hero-shuffle">Shuffle list now</button></div>' +
       '<div class="imgs" id="hero-imgs">' + imgs.map(function (g, i) { return '<div draggable="true" data-hi="' + i + '" style="cursor:grab">' + imgTile(g, 'h' + i) + '</div>'; }).join('') + dropZone('hero', 'Add hero images', true) + '</div>';
