@@ -131,10 +131,9 @@ button { font: inherit; color: inherit; }
 @media (prefers-reduced-motion: reduce) { .me-tag { animation: none; } }
 /* cursor image trail */
 .trail { position: absolute; inset: 0; pointer-events: none; z-index: 4; overflow: hidden; }
-.trail-img { position: absolute; left: 0; top: 0; width: clamp(170px, 17vw, 250px); aspect-ratio: 16 / 10; transform: translate3d(var(--x, 0px), var(--y, 0px), 0) translate(-50%, -50%); will-change: transform; }
-.trail-img .ti { width: 100%; height: 100%; border-radius: 4px; overflow: hidden; box-shadow: 0 24px 50px -20px rgba(0, 0, 0, .8); opacity: 0; transform: scale(.7) rotate(var(--rot)); transition: opacity .35s ease, transform .55s cubic-bezier(.2, .8, .2, 1); }
-.trail-img.on .ti { opacity: 1; transform: scale(1) rotate(var(--rot)); }
-.trail-img.out .ti { opacity: 0; transform: scale(.88) translateY(14px) rotate(var(--rot)); transition-duration: .7s; }
+.trail-img { position: absolute; left: 0; top: 0; width: clamp(150px, 14vw, 210px); aspect-ratio: 16 / 10; transform: translate3d(var(--x, 0px), var(--y, 0px), 0) translate(-50%, -50%); pointer-events: none; }
+.trail-img .ti { width: 100%; height: 100%; border-radius: 4px; overflow: hidden; box-shadow: 0 20px 40px -18px rgba(0, 0, 0, .8); animation: blink .8s cubic-bezier(.2, .8, .2, 1) forwards; }
+@keyframes blink { 0% { opacity: 0; transform: scale(.75) rotate(var(--rot)); } 18% { opacity: 1; transform: scale(1) rotate(var(--rot)); } 55% { opacity: 1; transform: scale(1) rotate(var(--rot)); } 100% { opacity: 0; transform: scale(.94) rotate(var(--rot)); } }
 .trail-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
 /* hero foot */
 .hero-foot { position: relative; z-index: 3; display: grid; gap: 20px; border-top: 1px solid var(--night-line); padding-block: clamp(20px, 2.4vw, 28px); align-items: center; }
@@ -755,39 +754,33 @@ dialog:fullscreen { width: 100%; height: 100%; border: 0; border-radius: 0; }
   }
   document.getElementById('hero-stage').addEventListener('click', function (e) { var b = e.target.closest('.fchip'); if (b) openWork(+b.getAttribute('data-i')); });
 
-  /* trail: the newest image glides after the cursor; older ones stay on the path and fade */
+  /* trail: each image pops up where the cursor is, holds briefly and fades, so the next one can follow quickly */
   var trailImgs = [], heroImgs = [], trailK = 0;
   var hero = document.getElementById('hero'), trail = document.getElementById('trail');
   if (finePointer && !reduce) {
-    var mx = 0, my = 0, sx = 0, sy = 0, lx = null, ly = null, head = null, inside = false, raf = 0;
-    var place = function (el, x, y) { el.style.setProperty('--x', x.toFixed(1) + 'px'); el.style.setProperty('--y', y.toFixed(1) + 'px'); };
-    var retire = function (el) { setTimeout(function () { el.classList.add('out'); setTimeout(function () { el.remove(); }, 750); }, 450); };
-    var spawn = function () {
+    var lx = null, ly = null, pend = null, ticking = false;
+    var spawn = function (x, y) {
       var list = heroImgs.length ? heroImgs : trailImgs; if (!list.length) return;
-      if (head) retire(head);
       var d = document.createElement('div');
-      d.className = 'trail-img'; d.style.setProperty('--rot', ((Math.random() * 6) - 3).toFixed(1) + 'deg');
+      d.className = 'trail-img';
+      d.style.setProperty('--x', x.toFixed(1) + 'px'); d.style.setProperty('--y', y.toFixed(1) + 'px');
+      d.style.setProperty('--rot', ((Math.random() * 5) - 2.5).toFixed(1) + 'deg');
       d.innerHTML = '<div class="ti"><img src="' + esc(list[trailK++ % list.length]) + '" alt=""></div>';
-      place(d, sx, sy); trail.appendChild(d);
-      requestAnimationFrame(function () { d.classList.add('on'); });
-      head = d; lx = sx; ly = sy;
-      while (trail.children.length > 12) trail.firstChild.remove();
-    };
-    var loop = function () {
-      sx += (mx - sx) * 0.16; sy += (my - sy) * 0.16;
-      if (head) place(head, sx, sy);
-      if (inside && (lx === null || Math.hypot(sx - lx, sy - ly) > 110)) spawn();
-      raf = (inside || Math.abs(mx - sx) + Math.abs(my - sy) > 0.5) ? requestAnimationFrame(loop) : 0;
+      d.firstChild.addEventListener('animationend', function () { d.remove(); });
+      trail.appendChild(d);
+      while (trail.children.length > 6) trail.firstChild.remove();
     };
     hero.addEventListener('mousemove', function (e) {
-      var r = hero.getBoundingClientRect(); mx = e.clientX - r.left; my = e.clientY - r.top;
-      var over = !e.target.closest('a, button');
-      if (!inside && over) { if (!head) { sx = mx; sy = my; } }
-      inside = over;
-      if (!over && head) { retire(head); head = null; lx = null; }
-      if (!raf) raf = requestAnimationFrame(loop);
+      if (e.target.closest('a, button')) { lx = ly = null; return; }
+      var r = hero.getBoundingClientRect(); pend = [e.clientX - r.left, e.clientY - r.top];
+      if (ticking) return; ticking = true;
+      requestAnimationFrame(function () {
+        ticking = false;
+        var x = pend[0], y = pend[1];
+        if (lx === null || Math.hypot(x - lx, y - ly) > 80) { spawn(x, y); lx = x; ly = y; }
+      });
     });
-    hero.addEventListener('mouseleave', function () { inside = false; if (head) { retire(head); head = null; } lx = null; });
+    hero.addEventListener('mouseleave', function () { lx = ly = null; });
   }
 
   /* ---------- work grid ---------- */
