@@ -106,8 +106,7 @@ button { font: inherit; color: inherit; }
 .me { height: 100%; display: flex; align-items: flex-end; position: relative; z-index: 1; }
 .me img { position: relative; z-index: 1; height: 100%; width: auto; max-width: none; display: block; object-fit: contain;
   filter: brightness(.9) contrast(1.04) saturate(.92);
-  -webkit-mask-image: linear-gradient(to bottom, #000 55%, rgba(0, 0, 0, .55) 80%, transparent 100%), linear-gradient(to right, transparent 0%, #000 22%, #000 78%, transparent 100%);
-  -webkit-mask-composite: source-in; mask-image: linear-gradient(to bottom, #000 55%, rgba(0, 0, 0, .55) 80%, transparent 100%), linear-gradient(to right, transparent 0%, #000 22%, #000 78%, transparent 100%); mask-composite: intersect; }
+  -webkit-mask-image: linear-gradient(to bottom, #000 90%, transparent 100%); mask-image: linear-gradient(to bottom, #000 90%, transparent 100%); }
 /* soft warm backlight so the cut-out sits in the scene */
 .me::before { content: ""; position: absolute; left: 50%; top: 8%; width: 120%; aspect-ratio: 1; transform: translateX(-50%); border-radius: 50%; background: radial-gradient(closest-side, rgba(249, 59, 21, .16), rgba(249, 59, 21, .05) 55%, transparent 75%); z-index: 0; pointer-events: none; }
 .me .ph { height: 86%; aspect-ratio: 4 / 5; border-radius: var(--r-lg); border: 1px dashed var(--night-line); display: grid; place-items: center; color: var(--night-muted); font-size: var(--t-sm); }
