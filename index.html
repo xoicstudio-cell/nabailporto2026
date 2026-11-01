@@ -55,6 +55,7 @@ html { scroll-behavior: smooth; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 body { margin: 0; background: var(--bg); color: var(--fg); font: 400 var(--t-base)/1.55 var(--f); transition: background-color .3s ease, color .3s ease; }
 h1, h2, h3, h4, p, dl, dd, ol, figure { margin: 0; }
+p, dd, li, h3, .lead { text-wrap: pretty; }
 img { max-width: 100%; }
 [hidden] { display: none !important; }
 a { color: inherit; }
@@ -716,6 +717,16 @@ dialog:fullscreen { width: 100%; height: 100%; border: 0; border-radius: 0; }
   }
   function imagesOf(w) { return [w.cover].concat(w.gallery || []).filter(Boolean); }
 
+  /* keep the last two words of a paragraph together, so no single word sits alone on the last line */
+  function noOrphans(root) {
+    (root || document).querySelectorAll('p, dd, h3, li, .lead, .v-head h3').forEach(function (el) {
+      var w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null), last = null, n;
+      while ((n = w.nextNode())) if (/\S/.test(n.nodeValue)) last = n;
+      if (!last) return;
+      var v = last.nodeValue.replace(/\s+$/, ''), k = v.lastIndexOf(' ');
+      if (k > 0 && v.length - k < 18) last.nodeValue = v.slice(0, k) + '\u00a0' + v.slice(k + 1) + last.nodeValue.slice(v.length);
+    });
+  }
   var WORK = [], CERTS = [];
 
   /* ---------- hero: software logo row ---------- */
@@ -884,6 +895,7 @@ dialog:fullscreen { width: 100%; height: 100%; border: 0; border-radius: 0; }
       more.insertAdjacentHTML('beforeend', '<button type="button" class="v-card" data-i="' + j + '"><i>' + (o.cover ? '<img src="' + esc(o.cover) + '" alt="">' : mock(o, j)) + '</i><span><small>' + esc(o.label || CAT[o.category] || '') + '</small><b>' + esc(o.title) + '</b></span></button>');
     }
     document.getElementById('v-scroll').scrollTop = 0;
+    noOrphans(dlg);
   }
   function openWork(i) { if (!WORK.length) return; if (!dlg.open) { try { dlg.showModal(); } catch (e) { dlg.setAttribute('open', ''); } } show(i); }
   function closeWork() { stopAuto(); if (document.fullscreenElement) document.exitFullscreen().catch(function () {}); dlg.close(); }
@@ -933,6 +945,7 @@ dialog:fullscreen { width: 100%; height: 100%; border: 0; border-radius: 0; }
       (c.credential_id ? '<div><dt>Credential ID</dt><dd>' + esc(c.credential_id) + '</dd></div>' : '');
     document.getElementById('c-extra').innerHTML = courses.length ? '<div class="label" style="margin-bottom:10px">Courses</div><div class="c-skills">' + courses.map(function (t) { return '<span class="chip">' + esc(t) + '</span>'; }).join('') + '</div>' : '';
     var v = document.getElementById('c-verify'); v.hidden = !c.url; v.href = c.url || '#';
+    noOrphans(cdlg);
   }
   certGrid.addEventListener('click', function (e) {
     var b = e.target.closest('.cert'); if (!b) return;
@@ -1008,7 +1021,7 @@ dialog:fullscreen { width: 100%; height: 100%; border: 0; border-radius: 0; }
     heroImgs = (r[3] && r[3].images || []).filter(Boolean);
     WORK = (r[1] && r[1].items || []).filter(function (w) { return w && w.title; });
     CERTS = (r[2] && r[2].items || []).filter(function (c) { return c && c.title; });
-    renderWork(); renderCerts(); renderChips();
+    renderWork(); renderCerts(); renderChips(); noOrphans();
   });
 })();
 </script>
