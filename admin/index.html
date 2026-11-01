@@ -400,29 +400,31 @@ textarea { min-height: 110px; resize: vertical; line-height: 1.5; }
     ed.innerHTML = '<div class="panel-head"><h2>' + esc(w.title || 'Untitled project') + '</h2><span class="label">' + (selWork + 1) + ' of ' + data.works.length + '</span></div>' +
       '<div class="form">' +
         '<div class="row two">' + fText('title', 'Title', w.title) + fText('label', 'Small label above the title', w.label, 'e.g. Presentation · Pitch deck') + '</div>' +
-        '<div class="row two">' + fSelect('category', 'Category (used by the filters)', w.category, CATS) + fSelect('platform', 'Platform', w.platform, PLATFORMS) + '</div>' +
+        fSelect('category', 'Category (used by the filters)', w.category, CATS) +
         '<div class="toggles">' + fCheck('featured', 'Show on homepage (Featured)', w.featured) + fCheck('placeholder', 'Mark as placeholder / draft', w.placeholder) + '</div>' +
         '<div class="section-t">Images</div>' +
         '<div class="field"><span>Cover image</span><em>Shown on the card. 4:3 works best.</em><div class="imgs">' + (w.cover ? imgTile(w.cover, 'cover') : dropZone('cover', 'Add cover', false)) + '</div></div>' +
         '<div class="field"><span>More images</span><em>Shown in the popup. Drag several at once.</em><div class="imgs">' +
           (w.gallery || []).map(function (g, i) { return imgTile(g, 'g' + i); }).join('') + dropZone('gallery', 'Add images', true) + '</div></div>' +
         '<div class="section-t">Details</div>' +
-        '<div class="row two">' + fText('link', 'Link to the project', w.link, 'Behance, Envato, Instagram post…', 'url') + fText('tools', 'Tools', w.tools, 'e.g. PowerPoint, Illustrator') + '</div>' +
-        '<div class="row three">' + fText('role', 'Your role', w.role) + fText('client', 'Client', w.client) + fText('duration', 'Duration', w.duration) + '</div>' +
+        '<div class="row two">' + fText('tools', 'Tools', w.tools, 'Separate with commas, e.g. PowerPoint, Illustrator. Logos appear automatically.') + fText('link', 'Link to the project', w.link, 'Optional: Behance, Envato, Instagram post…', 'url') + '</div>' +
+        '<div class="row two">' + fText('role', 'Your role', w.role) + fText('duration', 'Duration', w.duration) + '</div>' +
+        '<div class="section-t">Client</div>' +
+        '<div class="row two">' + fText('client', 'Client name', w.client) + '<div class="field"><span>Client logo</span><em>PNG or SVG with a transparent background works best.</em><div class="imgs">' + (w.client_logo ? imgTile(w.client_logo, 'client_logo') : dropZone('client_logo', 'Add logo', false)) + '</div></div></div>' +
         fArea('description', 'About the project', w.description) +
         '<div class="editor-foot"><div class="confirm"><button type="button" class="btn sm" data-up>↑ Move up</button><button type="button" class="btn sm" data-down>↓ Move down</button></div><div data-del></div></div>' +
       '</div>';
     bind(ed, w, function (k) { if (k === 'title' || k === 'label' || k === 'featured' || k === 'placeholder' || k === 'category') { renderWorkList(); if (k === 'title') ed.querySelector('.panel-head h2').textContent = w.title || 'Untitled project'; } });
     wireDrops(ed, function (kind, files) {
       Promise.all(files.map(function (f) { return prepImage(f, w.title); })).then(function (paths) {
-        if (kind === 'cover') w.cover = paths[0]; else w.gallery = (w.gallery || []).concat(paths);
+        if (kind === 'cover') w.cover = paths[0]; else if (kind === 'client_logo') w.client_logo = paths[0]; else w.gallery = (w.gallery || []).concat(paths);
         renderWorkList(); renderWorkEditor(); refreshState();
       }).catch(function () { toast('That image could not be read. Try a JPG, PNG or WebP file.', 'bad'); });
     });
     ed.querySelectorAll('[data-remove]').forEach(function (b) {
       b.addEventListener('click', function () {
         var k = b.getAttribute('data-remove');
-        if (k === 'cover') w.cover = ''; else w.gallery.splice(+k.slice(1), 1);
+        if (k === 'cover') w.cover = ''; else if (k === 'client_logo') w.client_logo = ''; else w.gallery.splice(+k.slice(1), 1);
         renderWorkList(); renderWorkEditor(); refreshState();
       });
     });
@@ -431,7 +433,7 @@ textarea { min-height: 110px; resize: vertical; line-height: 1.5; }
     deleteRow(ed, 'project', function () { data.works.splice(selWork, 1); selWork = Math.max(0, selWork - 1); renderWorkList(); renderWorkEditor(); refreshState(); toast('Project deleted. Publish to remove it from the website.'); });
   }
   $('add-work').addEventListener('click', function () {
-    data.works.unshift({ title: 'New project', category: 'presentation', label: 'Presentation', featured: false, placeholder: false, cover: '', gallery: [], platform: '', link: '', tools: '', role: '', client: '', duration: '', description: '' });
+    data.works.unshift({ title: 'New project', category: 'presentation', label: 'Presentation', featured: false, placeholder: false, cover: '', gallery: [], link: '', tools: '', role: '', client: '', client_logo: '', duration: '', description: '' });
     selWork = 0; renderWorkList(); renderWorkEditor(); refreshState();
     var t = $('work-editor').querySelector('[data-k="title"]'); if (t) { t.focus(); t.select(); }
   });
