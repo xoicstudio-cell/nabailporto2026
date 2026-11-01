@@ -34,15 +34,6 @@
   --gap-sec: clamp(96px, 11vw, 168px);
   color-scheme: light;
 }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #0e0d0c; --surface: #141311; --soft: #1b1917; --fg: #f3efe9; --muted: #9d968e; --line: #2b2723;
-    --orange: #ff4a24; --orange-soft: #2b1610; --on-orange: #ffffff;
-    --inv: #f3efe9; --inv-fg: #141210;
-    --night: #161412; --night-2: #221f1c; --night-fg: #faf7f3; --night-muted: #a39c94; --night-line: rgba(250, 247, 243, .12);
-    --shade: rgba(0, 0, 0, .6); color-scheme: dark;
-  }
-}
 :root[data-theme="dark"] {
   --bg: #0e0d0c; --surface: #141311; --soft: #1b1917; --fg: #f3efe9; --muted: #9d968e; --line: #2b2723;
   --orange: #ff4a24; --orange-soft: #2b1610; --on-orange: #ffffff;
@@ -102,7 +93,6 @@ button { font: inherit; color: inherit; }
 .theme-btn svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; }
 .theme-btn .sun { display: none; }
 :root[data-theme="dark"] .theme-btn .sun { display: block; } :root[data-theme="dark"] .theme-btn .moon { display: none; }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .theme-btn .sun { display: block; } :root:not([data-theme="light"]) .theme-btn .moon { display: none; } }
 .nav .btn.or { padding: 12px 16px; }
 
 .hero { position: relative; z-index: 2; padding-top: clamp(28px, 5vw, 64px); }
@@ -479,8 +469,8 @@ dialog:fullscreen { width: 100%; height: 100%; border: 0; border-radius: 0; }
       <div class="label">Tools I design with</div>
       <div class="logo-row" id="logo-row"></div>
     </div>
-    <div class="trail" id="trail" aria-hidden="true"></div>
   </section>
+  <div class="trail" id="trail" aria-hidden="true"></div>
 </div>
 
 <main id="top">
@@ -680,7 +670,7 @@ dialog:fullscreen { width: 100%; height: 100%; border: 0; border-radius: 0; }
   var finePointer = matchMedia('(hover: hover) and (pointer: fine)').matches;
 
   /* ---------- theme toggle ---------- */
-  function isDark() { var t = document.documentElement.getAttribute('data-theme'); return t ? t === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches; }
+  function isDark() { return document.documentElement.getAttribute('data-theme') === 'dark'; }
   document.getElementById('theme-btn').addEventListener('click', function () {
     var next = isDark() ? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', next);
@@ -767,7 +757,7 @@ dialog:fullscreen { width: 100%; height: 100%; border: 0; border-radius: 0; }
 
   /* trail: each image pops up where the cursor is, holds briefly and fades, so the next one can follow quickly */
   var trailImgs = [], heroImgs = [], trailK = 0;
-  var hero = document.getElementById('hero'), trail = document.getElementById('trail');
+  var hero = document.getElementById('hero'), trail = document.getElementById('trail'), topBand = document.getElementById('top-band');
   if (finePointer && !reduce) {
     var lx = null, ly = null, pend = null, ticking = false;
     var spawn = function (x, y) {
@@ -783,7 +773,7 @@ dialog:fullscreen { width: 100%; height: 100%; border: 0; border-radius: 0; }
     };
     hero.addEventListener('mousemove', function (e) {
       if (e.target.closest('a, button')) { lx = ly = null; return; }
-      var r = hero.getBoundingClientRect(); pend = [e.clientX - r.left, e.clientY - r.top];
+      var r = topBand.getBoundingClientRect(); pend = [e.clientX - r.left, e.clientY - r.top];
       if (ticking) return; ticking = true;
       requestAnimationFrame(function () {
         ticking = false;
