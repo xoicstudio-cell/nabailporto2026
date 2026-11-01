@@ -126,10 +126,10 @@ button { font: inherit; color: inherit; }
 .me-tag span { display: block; margin-top: 6px; font: 500 var(--t-sm)/1.4 var(--f); letter-spacing: .12em; text-transform: uppercase; color: var(--night-muted); }
 /* cursor image trail */
 .trail { position: absolute; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
-.trail-img { position: absolute; left: 0; top: 0; width: clamp(160px, 15vw, 230px); aspect-ratio: 16 / 9; transform: translate3d(var(--x, 0px), var(--y, 0px), 0) translate(-50%, -50%); pointer-events: none; }
-.trail-img .ti { width: 100%; height: 100%; border-radius: 4px; overflow: hidden; box-shadow: 0 20px 40px -18px rgba(0, 0, 0, .8); animation: blink .8s cubic-bezier(.2, .8, .2, 1) forwards; }
+.trail-img { position: absolute; left: 0; top: 0; transform: translate3d(var(--x, 0px), var(--y, 0px), 0) translate(-50%, -50%); pointer-events: none; }
+.trail-img .ti { border-radius: 4px; overflow: hidden; box-shadow: 0 20px 40px -18px rgba(0, 0, 0, .8); animation: blink .8s cubic-bezier(.2, .8, .2, 1) forwards; }
 @keyframes blink { 0% { opacity: 0; transform: scale(.75) rotate(var(--rot)); } 18% { opacity: 1; transform: scale(1) rotate(var(--rot)); } 55% { opacity: 1; transform: scale(1) rotate(var(--rot)); } 100% { opacity: 0; transform: scale(.94) rotate(var(--rot)); } }
-.trail-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.trail-img img { display: block; width: var(--w); height: var(--h); }
 /* hero foot */
 .hero-foot { position: relative; z-index: 3; display: grid; gap: 20px; border-top: 1px solid var(--night-line); padding-block: clamp(20px, 2.4vw, 28px); align-items: center; }
 @media (min-width: 900px) { .hero-foot { grid-template-columns: 1fr auto; } }
@@ -499,7 +499,7 @@ dialog:fullscreen { width: 100%; height: 100%; border: 0; border-radius: 0; }
       <div class="label">Selected work</div>
       <h2 class="h2">Decks, social and brand.</h2>
     </div>
-    <div class="boxes grid-work rv" id="grid"></div>
+    <div class="boxes grid-work" id="grid"></div>
     <div class="more-row"><a class="btn dark" href="#all-work">See all work <span id="all-count"></span><svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a></div>
   </section>
 
@@ -509,7 +509,7 @@ dialog:fullscreen { width: 100%; height: 100%; border: 0; border-radius: 0; }
       <div class="label">Services</div>
       <h2 class="h2">What you can hire me for.</h2>
     </div>
-    <div class="boxes svc rv">
+    <div class="boxes svc">
       <div class="box">
         <span class="idx">Main focus</span>
         <h3>Presentation &amp; Pitch Deck</h3>
@@ -541,7 +541,7 @@ dialog:fullscreen { width: 100%; height: 100%; border: 0; border-radius: 0; }
       <div class="label">About</div>
       <h2 class="h2">Intern to Senior Designer in 17 months.</h2>
     </div>
-    <div class="boxes about rv">
+    <div class="boxes about">
       <div class="box a-lead">
         <p class="lead"><b>I make information easy to read.</b> Most of my work turns data and long briefs into slides a decision-maker understands in seconds.</p>
         <p>I co-lead a small design team, write PowerPoint VBA macros that remove repetitive production work, and coach vocational students in graphic design.</p>
@@ -585,7 +585,7 @@ dialog:fullscreen { width: 100%; height: 100%; border: 0; border-radius: 0; }
         <a class="ext" href="https://www.linkedin.com/in/nabailsaewr/details/certifications/">All certifications on LinkedIn <svg viewBox="0 0 16 16"><path d="M4 12L12 4M6 4h6v6"/></svg></a>
       </div>
     </div>
-    <div class="boxes certs rv" id="certs"></div>
+    <div class="boxes certs" id="certs"></div>
 
     <div class="stage" id="toolkit">
       <div class="copy rv">
@@ -779,24 +779,29 @@ dialog:fullscreen { width: 100%; height: 100%; border: 0; border-radius: 0; }
   var hero = document.getElementById('hero'), trail = document.getElementById('trail'), topBand = document.getElementById('top-band');
   if (finePointer && !reduce) {
     var lx = null, ly = null, pend = null, ticking = false;
-    var preloaded = {};
-    var spawn = function (x, y) {
+    var ratio = {};   /* height / width per image, learned as images load */
+    var learn = function (src) { if (ratio[src]) return; ratio[src] = -1; var im = new Image(); im.onload = function () { ratio[src] = im.naturalHeight / im.naturalWidth || 0.5625; }; im.src = src; };
+    var stageEl = document.getElementById('hero-stage');
+    var spawn = function (cx, cy) {
       var list = heroImgs.length ? heroImgs : trailImgs; if (!list.length) return;
+      var src = list[trailK++ % list.length], r = ratio[src] > 0 ? ratio[src] : 0.5625;
+      var box = Math.min(240, Math.max(160, innerWidth * .15)), w = Math.min(box, (box * .95) / r), h = w * r;
+      var sr = stageEl.getBoundingClientRect();
+      var x = Math.min(Math.max(cx, w / 2), sr.width - w / 2), y = Math.min(Math.max(cy, h / 2), sr.height - h / 2);
       var d = document.createElement('div');
       d.className = 'trail-img';
-      d.style.setProperty('--x', x.toFixed(1) + 'px'); d.style.setProperty('--y', y.toFixed(1) + 'px');
-      d.style.setProperty('--rot', ((Math.random() * 5) - 2.5).toFixed(1) + 'deg');
-      d.innerHTML = '<div class="ti"><img src="' + esc(list[trailK++ % list.length]) + '" alt=""></div>';
-      for (var q = 0; q < 3; q++) { var pre = list[(trailK + q) % list.length]; if (!preloaded[pre]) { preloaded[pre] = 1; (new Image()).src = pre; } }
+      d.style.cssText = '--x:' + x.toFixed(1) + 'px;--y:' + y.toFixed(1) + 'px;--w:' + w.toFixed(1) + 'px;--h:' + h.toFixed(1) + 'px;--rot:' + ((Math.random() * 5) - 2.5).toFixed(1) + 'deg';
+      d.innerHTML = '<div class="ti"><img src="' + esc(src) + '" alt=""></div>';
+      for (var q = 0; q < 4; q++) learn(list[(trailK + q) % list.length]);
       d.firstChild.addEventListener('animationend', function () { d.remove(); });
       trail.appendChild(d);
       while (trail.children.length > 6) trail.firstChild.remove();
     };
-    var stageEl = document.getElementById('hero-stage');
+    stageEl.addEventListener('mouseenter', function () { var list = heroImgs.length ? heroImgs : trailImgs; for (var q = 0; q < 4; q++) if (list.length) learn(list[(trailK + q) % list.length]); });
     stageEl.addEventListener('mousemove', function (e) {
       if (e.target.closest('a, button')) { lx = ly = null; return; }
-      var r = stageEl.getBoundingClientRect(), iw = Math.min(230, Math.max(160, innerWidth * .15)), ih = iw * .5625;
-      pend = [Math.min(Math.max(e.clientX - r.left, iw / 2), r.width - iw / 2), Math.min(Math.max(e.clientY - r.top, ih / 2), r.height - ih / 2)];
+      var r = stageEl.getBoundingClientRect();
+      pend = [e.clientX - r.left, e.clientY - r.top];
       if (ticking) return; ticking = true;
       requestAnimationFrame(function () {
         ticking = false;
@@ -986,6 +991,7 @@ dialog:fullscreen { width: 100%; height: 100%; border: 0; border-radius: 0; }
   window.addEventListener('hashchange', route); route();
 
   /* ---------- scroll reveal (only for things below the first screen) ---------- */
+  setTimeout(function () { document.querySelectorAll('.rv').forEach(function (el) { el.classList.add('in'); }); }, 2500);
   if (!reduce && 'IntersectionObserver' in window) {
     var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }); }, { rootMargin: '0px 0px -8% 0px' });
     document.querySelectorAll('.rv').forEach(function (el) {
