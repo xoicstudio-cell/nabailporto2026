@@ -166,6 +166,10 @@ button { font: inherit; color: inherit; }
   .logos { padding-block: clamp(10px, 1.6vh, 16px) clamp(12px, 2vh, 22px); gap: clamp(8px, 1.2vh, 12px); }
 }
 
+/* all-work view: the dark band shrinks to just the menu */
+.top.compact { height: auto !important; min-height: 0 !important; max-height: none !important; }
+.top.compact::before { display: none; }
+
 /* hero load animation */
 @media (prefers-reduced-motion: no-preference) {
   .hero-title .w { animation: rise .9s cubic-bezier(.2, .7, .2, 1) both; animation-delay: calc(var(--i) * 60ms + 80ms); }
@@ -986,6 +990,7 @@ dialog:fullscreen { width: 100%; height: 100%; border: 0; border-radius: 0; }
     var arch = location.hash === '#all-work';
     home.hidden = arch; archive.hidden = !arch;
     document.getElementById('hero').hidden = arch;
+    topBand.classList.toggle('compact', arch);
     if (arch) window.scrollTo(0, 0);
   }
   window.addEventListener('hashchange', route); route();
