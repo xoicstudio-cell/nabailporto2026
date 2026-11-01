@@ -1029,6 +1029,7 @@ dialog:fullscreen { width: 100%; height: 100%; border: 0; border-radius: 0; }
   Promise.all([get('content/profile.json'), get('content/works.json'), get('content/certifications.json'), get('content/hero.json')]).then(function (r) {
     renderProfile(r[0]);
     heroImgs = (r[3] && r[3].images || []).filter(Boolean);
+    if (r[3] && r[3].random) for (var hi = heroImgs.length - 1; hi > 0; hi--) { var hj = Math.floor(Math.random() * (hi + 1)), ht = heroImgs[hi]; heroImgs[hi] = heroImgs[hj]; heroImgs[hj] = ht; }
     WORK = (r[1] && r[1].items || []).filter(function (w) { return w && w.title; });
     CERTS = (r[2] && r[2].items || []).filter(function (c) { return c && c.title; });
     renderWork(); renderCerts(); renderChips(); noOrphans();
