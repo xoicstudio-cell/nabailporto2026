@@ -1,0 +1,101 @@
+# GitHub repository this admin edits.
+backend:
+  name: github
+  repo: xoicstudio-cell/nabailporto2026
+  branch: main
+
+media_folder: images/uploads
+public_folder: images/uploads
+
+collections:
+  - name: site
+    label: Website content
+    files:
+      # ---------- Profile ----------
+      - name: profile
+        label: Profile & contact
+        file: content/profile.json
+        format: json
+        fields:
+          - { name: name, label: Name, widget: string }
+          - { name: role, label: Role under your photo, widget: string }
+          - { name: photo, label: Photo (portrait, about 4:5), widget: image, required: false }
+          - { name: open_for_work, label: Show "open for work" badge, widget: boolean, default: true }
+          - { name: status_text, label: Badge text, widget: string }
+          - { name: intro, label: Intro sentence in the hero, widget: text }
+          - { name: email, label: Email, widget: string }
+          - { name: whatsapp_display, label: WhatsApp (shown on the page), widget: string, hint: "e.g. +62 889 0537 0830" }
+          - { name: whatsapp_number, label: WhatsApp (digits only for the link), widget: string, hint: "e.g. 6288905370830" }
+          - { name: linkedin, label: LinkedIn URL, widget: string }
+
+      # ---------- Work ----------
+      - name: works
+        label: Work
+        file: content/works.json
+        format: json
+        fields:
+          - name: items
+            label: Projects
+            label_singular: Project
+            widget: list
+            summary: "{{fields.title}} — {{fields.label}}"
+            hint: "Drag to reorder. Projects marked Featured (max 6) show on the homepage; all of them show on the All work page."
+            fields:
+              - { name: title, label: Title, widget: string }
+              - name: category
+                label: Category (used by the filters)
+                widget: select
+                options:
+                  - { label: Presentation, value: presentation }
+                  - { label: Social media, value: social }
+                  - { label: Brand & print, value: brand }
+              - { name: label, label: Small label above the title, widget: string, hint: "e.g. Presentation · Pitch deck" }
+              - { name: featured, label: Featured on homepage, widget: boolean, default: false }
+              - { name: placeholder, label: Mark as placeholder, widget: boolean, default: false }
+              - { name: cover, label: Cover image (shown in the grid, 4:3 works best), widget: image, required: false }
+              - name: gallery
+                label: More images (shown in the popup)
+                widget: list
+                required: false
+                field: { name: image, label: Image, widget: image }
+              - name: platform
+                label: Platform
+                widget: select
+                required: false
+                options: ["Envato Market", "Behance", "Instagram", "Other"]
+              - { name: link, label: Link to the project, widget: string, required: false }
+              - { name: tools, label: Tools, widget: string, required: false }
+              - { name: role, label: Your role, widget: string, required: false }
+              - { name: client, label: Client, widget: string, required: false }
+              - { name: duration, label: Duration, widget: string, required: false }
+              - { name: description, label: About the project, widget: text, required: false }
+
+      # ---------- Certifications ----------
+      - name: certifications
+        label: Certifications
+        file: content/certifications.json
+        format: json
+        fields:
+          - name: items
+            label: Certificates
+            label_singular: Certificate
+            widget: list
+            summary: "{{fields.title}}"
+            fields:
+              - { name: title, label: Title, widget: string }
+              - { name: issuer, label: Issued by, widget: string }
+              - name: logo
+                label: Issuer logo
+                widget: select
+                options: ["Google", "Microsoft", "Coursera", "Adobe", "CalArts"]
+              - { name: date, label: Date, widget: string, hint: "e.g. Aug 25, 2026" }
+              - { name: type, label: Type, widget: string, hint: "e.g. Course certificate" }
+              - { name: credential_id, label: Credential ID, widget: string, required: false }
+              - { name: url, label: Verify link, widget: string, required: false }
+              - { name: image, label: Certificate image, widget: image }
+              - { name: featured, label: Highlight (dark wide card), widget: boolean, default: false }
+              - name: courses
+                label: Courses included
+                widget: list
+                required: false
+                field: { name: course, label: Course, widget: string }

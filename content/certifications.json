@@ -1,0 +1,72 @@
+{
+  "items": [
+    {
+      "title": "Google AI Professional Certificate",
+      "issuer": "Google",
+      "logo": "Google",
+      "date": "Aug 3, 2026",
+      "type": "Professional certificate · 7 courses",
+      "credential_id": "3E2EF416YDMN",
+      "url": "https://coursera.org/verify/professional-cert/3E2EF416YDMN",
+      "image": "images/certs/google.webp",
+      "featured": true,
+      "courses": [
+        "AI Fundamentals",
+        "AI for Brainstorming and Planning",
+        "AI for Research and Insights",
+        "AI for Writing and Communicating",
+        "AI for Content Creation",
+        "AI for Data Analysis",
+        "AI for App Building"
+      ]
+    },
+    {
+      "title": "Work Smarter with Microsoft PowerPoint",
+      "issuer": "Microsoft",
+      "logo": "Microsoft",
+      "date": "Aug 25, 2026",
+      "type": "Course certificate",
+      "credential_id": "F7JX605NGGIE",
+      "url": "https://coursera.org/verify/F7JX605NGGIE",
+      "image": "images/certs/ppt.webp",
+      "featured": false,
+      "courses": []
+    },
+    {
+      "title": "Presentation Design Mastery in Canva",
+      "issuer": "Coursera",
+      "logo": "Coursera",
+      "date": "Aug 25, 2026",
+      "type": "Course certificate",
+      "credential_id": "ROGVF6QEPANA",
+      "url": "https://coursera.org/verify/ROGVF6QEPANA",
+      "image": "images/certs/canva.webp",
+      "featured": false,
+      "courses": []
+    },
+    {
+      "title": "Graphic Design",
+      "issuer": "Adobe",
+      "logo": "Adobe",
+      "date": "Jul 5, 2026",
+      "type": "Course certificate",
+      "credential_id": "51QMBQAFQQ16",
+      "url": "https://coursera.org/verify/51QMBQAFQQ16",
+      "image": "images/certs/adobe.webp",
+      "featured": false,
+      "courses": []
+    },
+    {
+      "title": "Visual Elements of User Interface Design",
+      "issuer": "California Institute of the Arts",
+      "logo": "CalArts",
+      "date": "Jul 7, 2026",
+      "type": "Course certificate",
+      "credential_id": "1D457FJRKVRH",
+      "url": "https://coursera.org/verify/1D457FJRKVRH",
+      "image": "images/certs/calarts.webp",
+      "featured": false,
+      "courses": []
+    }
+  ]
+}
