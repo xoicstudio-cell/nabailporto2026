@@ -776,6 +776,7 @@ dialog:fullscreen { width: 100%; height: 100%; border: 0; border-radius: 0; }
   var hero = document.getElementById('hero'), trail = document.getElementById('trail'), topBand = document.getElementById('top-band');
   if (finePointer && !reduce) {
     var lx = null, ly = null, pend = null, ticking = false;
+    var preloaded = {};
     var spawn = function (x, y) {
       var list = heroImgs.length ? heroImgs : trailImgs; if (!list.length) return;
       var d = document.createElement('div');
@@ -783,6 +784,7 @@ dialog:fullscreen { width: 100%; height: 100%; border: 0; border-radius: 0; }
       d.style.setProperty('--x', x.toFixed(1) + 'px'); d.style.setProperty('--y', y.toFixed(1) + 'px');
       d.style.setProperty('--rot', ((Math.random() * 5) - 2.5).toFixed(1) + 'deg');
       d.innerHTML = '<div class="ti"><img src="' + esc(list[trailK++ % list.length]) + '" alt=""></div>';
+      for (var q = 0; q < 3; q++) { var pre = list[(trailK + q) % list.length]; if (!preloaded[pre]) { preloaded[pre] = 1; (new Image()).src = pre; } }
       d.firstChild.addEventListener('animationend', function () { d.remove(); });
       trail.appendChild(d);
       while (trail.children.length > 6) trail.firstChild.remove();
