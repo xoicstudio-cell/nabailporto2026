@@ -114,7 +114,7 @@ button { font: inherit; color: inherit; }
 .fchip i .mock { width: 70%; }
 .fchip span { display: block; padding: 8px 4px 2px; font: 500 var(--t-xs)/1.3 var(--f); letter-spacing: .08em; text-transform: uppercase; color: var(--night-fg); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-@media (max-width: 759px) { .fchip { display: none; } .fchip:nth-of-type(1) { display: block; width: 104px; } }
+@media (max-width: 759px) { .fchip { display: none; } .fchip:nth-of-type(1) { display: block; width: 104px; top: 6% !important; left: 0 !important; } }
 /* name tag floating over the photo */
 .me-tag { position: absolute; left: 50%; bottom: clamp(16px, 4vw, 48px); transform: translateX(-50%); z-index: 3; text-align: center; padding: 12px 18px; border-radius: var(--r); background: rgba(18, 17, 16, .45); border: 1px solid rgba(250, 247, 243, .18); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); white-space: nowrap; animation: tagbob 6s ease-in-out infinite; }
 .me-tag strong { display: block; font: 500 var(--t-base)/1.25 var(--f); letter-spacing: -.01em; color: var(--night-fg); }
@@ -122,7 +122,7 @@ button { font: inherit; color: inherit; }
 @keyframes tagbob { 0%, 100% { transform: translate(-50%, 0); } 50% { transform: translate(-50%, -6px); } }
 @media (prefers-reduced-motion: reduce) { .me-tag { animation: none; } }
 /* cursor image trail */
-.trail { position: absolute; inset: 0; pointer-events: none; z-index: 4; overflow: hidden; }
+.trail { position: absolute; inset: 0; pointer-events: none; z-index: 1; overflow: hidden; }
 .trail-img { position: absolute; left: 0; top: 0; width: clamp(150px, 14vw, 210px); aspect-ratio: 16 / 10; transform: translate3d(var(--x, 0px), var(--y, 0px), 0) translate(-50%, -50%); pointer-events: none; }
 .trail-img .ti { width: 100%; height: 100%; border-radius: 4px; overflow: hidden; box-shadow: 0 20px 40px -18px rgba(0, 0, 0, .8); animation: blink .8s cubic-bezier(.2, .8, .2, 1) forwards; }
 @keyframes blink { 0% { opacity: 0; transform: scale(.75) rotate(var(--rot)); } 18% { opacity: 1; transform: scale(1) rotate(var(--rot)); } 55% { opacity: 1; transform: scale(1) rotate(var(--rot)); } 100% { opacity: 0; transform: scale(.94) rotate(var(--rot)); } }
@@ -739,7 +739,7 @@ dialog:fullscreen { width: 100%; height: 100%; border: 0; border-radius: 0; }
   }
 
   /* ---------- hero: floating work chips + cursor trail ---------- */
-  var POS = [['l', '6%', '8%'], ['l', '14%', '58%'], ['r', '6%', '4%'], ['r', '13%', '54%']];
+  var POS = [['l', '4%', '-30%'], ['l', '12%', '30%'], ['r', '4%', '-22%'], ['r', '12%', '38%']];
   function renderChips() {
     var stage = document.getElementById('hero-stage');
     stage.querySelectorAll('.fchip').forEach(function (n) { n.remove(); });
