@@ -391,7 +391,7 @@ dialog:fullscreen { width: 100%; height: 100%; border: 0; border-radius: 0; }
 .car { position: relative; height: clamp(240px, 62vh, 760px); max-width: 100%; border-radius: 4px; background: var(--soft); overflow: hidden; }
 .car .slide { position: absolute; inset: 0; display: grid; place-items: center; opacity: 0; transform: scale(1.02); transition: opacity .6s ease, transform .8s ease; }
 .car .slide.on { opacity: 1; transform: none; }
-.car .slide img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.car .slide img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; display: block; }
 .car .slide .mock { width: min(48%, 600px); }
 .car-hint { position: absolute; left: 0; right: 0; bottom: 16px; text-align: center; font: 500 var(--t-xs)/1.4 var(--f); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
 .car-arr { position: absolute; top: 50%; transform: translateY(-50%); width: 46px; height: 46px; border-radius: 50%; border: 0; background: rgba(20, 18, 16, .55); color: #faf7f3; cursor: pointer; display: grid; place-items: center; backdrop-filter: blur(6px); transition: background-color .2s ease; z-index: 2; }
