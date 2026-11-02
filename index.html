@@ -230,6 +230,13 @@ button { font: inherit; color: inherit; }
 .work:hover .go { background: var(--orange); border-color: var(--orange); }
 .go svg { transition: transform .3s ease; } .work:hover .go svg { transform: rotate(45deg); }
 .work:hover .go svg { stroke: var(--on-orange); }
+.reel { position: relative; border: 1px solid var(--line, rgba(0,0,0,.12)); border-radius: var(--r-md, 10px); overflow: hidden; background: #0f0d0c; aspect-ratio: 16 / 9; }
+.reel video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+.reel-btn { position: absolute; right: 14px; bottom: 14px; width: 40px; height: 40px; border-radius: 50%; border: 1px solid rgba(255,255,255,.28); background: rgba(15,13,12,.55); color: #fff; display: grid; place-items: center; cursor: pointer; backdrop-filter: blur(6px); }
+.reel-btn svg { width: 16px; height: 16px; fill: currentColor; }
+.reel-btn .i-play { display: none; }
+.reel.paused .reel-btn .i-play { display: block; }
+.reel.paused .reel-btn .i-pause { display: none; }
 .more-row { display: flex; justify-content: center; margin-top: 40px; }
 /* flat mocks shown until a cover exists */
 .mock { width: 64%; }
@@ -522,6 +529,24 @@ dialog:fullscreen { width: 100%; height: 100%; border: 0; border-radius: 0; }
     <div class="more-row"><a class="btn dark" href="#all-work">See all work <span id="all-count"></span><svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a></div>
   </section>
 
+  <!-- SHOWREEL -->
+  <section class="wrap sec" id="showreel">
+    <div class="sec-head rv">
+      <div class="label">Showreel</div>
+      <h2 class="h2">Slides in motion.</h2>
+    </div>
+    <div class="reel" id="reel">
+      <video id="reel-video" muted loop playsinline preload="none" poster="videos/showreel-poster.webp" aria-label="Showreel of presentation and pitch deck designs">
+        <source src="videos/showreel.mp4" type="video/mp4">
+        <source src="videos/showreel.webm" type="video/webm">
+      </video>
+      <button class="reel-btn" id="reel-btn" type="button" aria-label="Pause or play showreel">
+        <svg class="i-pause" viewBox="0 0 16 16"><path d="M4 3h3v10H4zM9 3h3v10H9z"/></svg>
+        <svg class="i-play" viewBox="0 0 16 16"><path d="M4 2.5v11l9-5.5z"/></svg>
+      </button>
+    </div>
+  </section>
+
   <!-- SERVICES -->
   <section class="wrap sec" id="services">
     <div class="sec-head rv">
@@ -784,6 +809,21 @@ dialog:fullscreen { width: 100%; height: 100%; border: 0; border-radius: 0; }
       typerTimer = setTimeout(tick, wait);
     })();
   }
+
+  /* ---------- showreel: play only while visible ---------- */
+  (function () {
+    var box = document.getElementById('reel'), v = document.getElementById('reel-video'), btn = document.getElementById('reel-btn');
+    if (!box || !v) return;
+    var userPaused = false, reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function setUi() { box.classList.toggle('paused', v.paused); }
+    function play() { if (userPaused || reduceMotion) return; var p = v.play(); if (p && p.catch) p.catch(function () {}); }
+    v.addEventListener('play', setUi); v.addEventListener('pause', setUi); setUi();
+    if (reduceMotion) { v.removeAttribute('autoplay'); box.classList.add('paused'); }
+    btn.addEventListener('click', function () { if (v.paused) { userPaused = false; reduceMotion = false; v.play(); } else { userPaused = true; v.pause(); } });
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { if (v.preload === 'none') { v.preload = 'auto'; } play(); } else { v.pause(); } }); }, { threshold: 0.35 }).observe(box);
+    } else { play(); }
+  })();
 
   /* ---------- profile ---------- */
   function renderProfile(p) {
