@@ -132,8 +132,8 @@ button { font: inherit; color: inherit; }
 .trail-img img { display: block; width: var(--w); height: var(--h); }
 /* hero foot */
 .hero-foot { position: relative; z-index: 3; display: grid; gap: 20px; padding-block: clamp(18px, 2.4vh, 28px); align-items: center; }
-.hero-foot::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--night-line) 18%, var(--night-line) 82%, transparent); }
-@media (min-width: 900px) { .hero-foot { grid-template-columns: 1fr auto; } }
+.hero-foot::before { display: none; content: ""; position: absolute; left: 0; right: 0; top: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--night-line) 18%, var(--night-line) 82%, transparent); }
+.hero-foot { justify-items: center; }
 .hero-foot p { color: var(--night-muted); max-width: 70ch; font-size: var(--t-sm); }
 .cta { display: flex; flex-wrap: wrap; gap: 10px; }
 @media (min-width: 900px) { .cta { justify-content: flex-end; } }
@@ -165,7 +165,7 @@ button { font: inherit; color: inherit; }
   .hero-title { font-size: clamp(2.6rem, min(5.4vw, 8.4vh), 6.2rem); max-width: 18ch; }
   .hero-stage { flex: 1; height: auto; min-height: 180px; max-height: 560px; margin-top: clamp(4px, 1vh, 12px); }
   .me img { max-height: 560px; }
-  .hero-foot { padding-block: clamp(12px, 1.8vh, 20px); }
+  .hero-foot { padding-block: clamp(12px, 1.8vh, 20px) clamp(20px, 3vh, 32px); }
   .logos { padding-block: clamp(10px, 1.6vh, 16px) clamp(12px, 2vh, 22px); gap: clamp(8px, 1.2vh, 12px); }
 }
 
@@ -495,12 +495,7 @@ dialog:fullscreen { width: 100%; height: 100%; border: 0; border-radius: 0; }
       <div class="me-tag"><strong id="p-name">Naba'ilsae Wildan Rosadi</strong><span id="p-role">Senior Graphic Designer</span></div>
     </div>
     <div class="hero-foot">
-      <p id="p-intro">I design presentations and pitch decks that make complex data easy to follow, plus social media and brand visuals for clients worldwide.</p>
       <div class="cta"><a class="btn or" href="#work">See my work</a><a class="btn" href="#contact">Contact</a></div>
-    </div>
-    <div class="logos">
-      <div class="label">Tools I design with</div>
-      <div class="logo-row" id="logo-row"></div>
     </div>
   </section>
 </div>
@@ -751,16 +746,11 @@ dialog:fullscreen { width: 100%; height: 100%; border: 0; border-radius: 0; }
   }
   var WORK = [], CERTS = [];
 
-  /* ---------- hero: software logo row ---------- */
-  var SOFTWARE = ['PowerPoint', 'Illustrator', 'Photoshop', 'InDesign', 'Figma', 'Canva', 'Google Slides', 'Pitch', 'Word', 'Google Sheets'];
-  var logoSet = SOFTWARE.map(function (n) { return '<span>' + logo(n) + n + '</span>'; }).join('');
-  document.getElementById('logo-row').innerHTML = '<div class="logo-track"><div class="logo-set">' + logoSet + '</div><div class="logo-set" aria-hidden="true">' + logoSet + '</div></div>';
-
   /* ---------- profile ---------- */
   function renderProfile(p) {
     if (!p) return;
     var set = function (id, v) { var el = document.getElementById(id); if (el && v) el.textContent = v; };
-    set('p-name', p.name); set('p-role', p.role); set('p-intro', p.intro); set('p-status', p.status_text);
+    set('p-name', p.name); set('p-role', p.role); set('p-status', p.status_text);
     set('p-email', p.email); set('p-wa', p.whatsapp_display);
     document.getElementById('p-status-box').hidden = p.open_for_work === false;
     if (p.photo) document.getElementById('p-photo').innerHTML = '<img src="' + esc(p.photo) + '" alt="' + esc(p.name || '') + '">';
