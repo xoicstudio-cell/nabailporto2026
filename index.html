@@ -761,7 +761,9 @@ dialog:fullscreen { width: 100%; height: 100%; border: 0; border-radius: 0; }
     if (!el) return;
     var first = String(p.name || '').split(' ')[0];
     var open = p.status_text || 'Open for freelance & full-time work';
-    var lines = [(first ? 'Hi, I\u2019m ' + first : 'Hi there'), open];
+    var hello = ['\u3053\u3093\u306b\u3061\u306f', '\uc548\ub155\ud558\uc138\uc694', '\u4f60\u597d', '\u041f\u0440\u0438\u0432\u0435\u0442', 'Hola', 'Halo'];
+    var lines = hello.concat([(first ? 'Hi, I\u2019m ' + first : 'Hi there'), open]);
+    var last = lines.length - 1;
     var longest = lines.reduce(function (a, b) { return b.length > a.length ? b : a; }, '');
     sizer.textContent = longest + '_ ';
     clearTimeout(typerTimer);
@@ -771,7 +773,7 @@ dialog:fullscreen { width: 100%; height: 100%; border: 0; border-radius: 0; }
       var full = lines[li], wait;
       if (!del) {
         ci++; el.textContent = full.slice(0, ci);
-        if (ci === full.length) { del = true; wait = li === 0 ? 1500 : 2600; } else wait = 55 + Math.random() * 35;
+        if (ci === full.length) { del = true; wait = li === last ? 2800 : li === last - 1 ? 1700 : 900; } else wait = (li < last - 1 ? 70 : 50) + Math.random() * 30;
       } else {
         ci--; el.textContent = full.slice(0, ci);
         if (ci === 0) { del = false; li = (li + 1) % lines.length; wait = 380; } else wait = 26;
