@@ -131,7 +131,7 @@ button { font: inherit; color: inherit; }
 @keyframes blink { 0% { opacity: 0; transform: scale(.75) rotate(var(--rot)); } 18% { opacity: 1; transform: scale(1) rotate(var(--rot)); } 55% { opacity: 1; transform: scale(1) rotate(var(--rot)); } 100% { opacity: 0; transform: scale(.94) rotate(var(--rot)); } }
 .trail-img img { display: block; width: var(--w); height: var(--h); }
 /* hero foot */
-.hero-foot { position: relative; z-index: 3; display: grid; gap: 20px; padding-block: clamp(18px, 2.4vh, 28px); align-items: center; }
+.hero-foot { position: relative; z-index: 3; display: grid; gap: 20px; padding-block: clamp(18px, 2.4vh, 28px) clamp(40px, 6vh, 64px); align-items: center; }
 .hero-foot::before { display: none; content: ""; position: absolute; left: 0; right: 0; top: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--night-line) 18%, var(--night-line) 82%, transparent); }
 .hero-foot { justify-items: center; }
 .hero-foot p { color: var(--night-muted); max-width: 70ch; font-size: var(--t-sm); }
@@ -165,7 +165,7 @@ button { font: inherit; color: inherit; }
   .hero-title { font-size: clamp(2.6rem, min(5.4vw, 8.4vh), 6.2rem); max-width: 18ch; }
   .hero-stage { flex: 1; height: auto; min-height: 180px; max-height: 560px; margin-top: clamp(4px, 1vh, 12px); }
   .me img { max-height: 560px; }
-  .hero-foot { padding-block: clamp(12px, 1.8vh, 20px) clamp(20px, 3vh, 32px); }
+  .hero-foot { padding-block: clamp(12px, 1.8vh, 20px) clamp(36px, 6.5vh, 68px); }
   .logos { padding-block: clamp(10px, 1.6vh, 16px) clamp(12px, 2vh, 22px); gap: clamp(8px, 1.2vh, 12px); }
 }
 
