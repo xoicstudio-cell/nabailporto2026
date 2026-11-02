@@ -69,8 +69,11 @@ button { font: inherit; color: inherit; }
 .typer { display: inline-grid; }
 .typer > * { grid-area: 1 / 1; }
 .typer .sizer { visibility: hidden; white-space: nowrap; height: 0; overflow: hidden; }
-.typer .typed { text-align: center; white-space: nowrap; min-height: 1.4em; }
-.typer .typed::after { content: "_"; margin-left: 1px; animation: caret .9s steps(1) infinite; }
+.status > .breath { display: none; }
+.typer .typed { display: flex; align-items: center; justify-content: center; gap: 12px; white-space: nowrap; min-height: 1.4em; }
+.typer .typed::before { content: ""; flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--orange); animation: dotpulse 2.4s ease-in-out infinite; }
+@keyframes dotpulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(249, 59, 21, .55); } 50% { box-shadow: 0 0 0 6px rgba(249, 59, 21, 0); } }
+.typer .typed::after { content: "_"; margin-left: -9px; animation: caret .9s steps(1) infinite; }
 .typer .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 @keyframes caret { 50% { opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .typer .typed::after { animation: none; } }
@@ -106,7 +109,7 @@ button { font: inherit; color: inherit; }
 
 .hero { position: relative; z-index: 2; padding-top: clamp(28px, 5vw, 64px); }
 .hero-head { display: flex; flex-direction: column; align-items: center; text-align: center; gap: clamp(18px, 2.4vw, 28px); position: relative; z-index: 2; }
-.status { display: inline-flex; align-items: center; gap: 12px; padding: 9px 14px; border-radius: 999px; border: 1px solid var(--night-line); font-size: var(--t-sm); color: var(--night-fg); background: rgba(250, 247, 243, .04); }
+.status { display: inline-flex; align-items: center; gap: 12px; padding: 4px 0; font-size: var(--t-base, 1rem); color: var(--night-fg); }
 .hero-title { font: 500 var(--t-3xl)/.95 var(--f); letter-spacing: -.055em; text-wrap: balance; max-width: 13ch; }
 .hero-title .w { display: inline-block; }
 .hero-title .acc { color: var(--orange); }
@@ -765,7 +768,7 @@ dialog:fullscreen { width: 100%; height: 100%; border: 0; border-radius: 0; }
     var lines = hello.concat([(first ? 'Hi, I\u2019m ' + first : 'Hi there'), open]);
     var last = lines.length - 1;
     var longest = lines.reduce(function (a, b) { return b.length > a.length ? b : a; }, '');
-    sizer.textContent = longest + '_ ';
+    sizer.textContent = longest + "_ \u00a0\u00a0\u00a0\u00a0\u00a0";
     clearTimeout(typerTimer);
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) { el.textContent = open; return; }
     var li = 0, ci = 0, del = false;
