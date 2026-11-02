@@ -66,6 +66,14 @@ button { font: inherit; color: inherit; }
 .h2 span { color: var(--muted); }
 
 /* breathing dot */
+.typer { display: inline-grid; }
+.typer > * { grid-area: 1 / 1; }
+.typer .sizer { visibility: hidden; white-space: nowrap; height: 0; overflow: hidden; }
+.typer .typed { text-align: center; white-space: nowrap; min-height: 1.4em; }
+.typer .typed::after { content: "_"; margin-left: 1px; animation: caret .9s steps(1) infinite; }
+.typer .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+@keyframes caret { 50% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .typer .typed::after { animation: none; } }
 .breath { position: relative; display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--orange); flex: none; }
 .breath::after { content: ""; position: absolute; inset: -5px; border-radius: 50%; border: 1.5px solid var(--orange); animation: breathe 2.4s ease-in-out infinite; }
 @keyframes breathe { 0%, 100% { transform: scale(.6); opacity: 0; } 50% { transform: scale(1.15); opacity: 1; } }
@@ -486,7 +494,7 @@ dialog:fullscreen { width: 100%; height: 100%; border: 0; border-radius: 0; }
 
   <section class="hero wrap" id="hero">
     <div class="hero-head">
-      <span class="status" id="p-status-box"><span class="breath"></span><span id="p-status">Open for freelance &amp; full-time work</span></span>
+      <span class="status" id="p-status-box"><span class="breath"></span><span class="typer" id="p-typer"><span class="sizer" id="p-sizer" aria-hidden="true">Open for freelance &amp; full-time work</span><span class="typed" id="p-typed" aria-live="off"></span><span class="sr" id="p-status">Open for freelance &amp; full-time work</span></span></span>
       <h1 class="hero-title"><span class="w" style="--i:0">Presentations</span> <span class="w" style="--i:1">that</span> <span class="w" style="--i:2">land</span> <span class="w" style="--i:3">on</span> <span class="w" style="--i:4">the</span> <span class="w acc" style="--i:5">first</span> <span class="w acc" style="--i:6">review.</span></h1>
     </div>
     <div class="hero-stage" id="hero-stage">
@@ -746,11 +754,37 @@ dialog:fullscreen { width: 100%; height: 100%; border: 0; border-radius: 0; }
   }
   var WORK = [], CERTS = [];
 
+  /* ---------- hero status: typewriter loop ---------- */
+  var typerTimer = null;
+  function startTyper(p) {
+    var el = document.getElementById('p-typed'), sizer = document.getElementById('p-sizer');
+    if (!el) return;
+    var first = String(p.name || '').split(' ')[0];
+    var open = p.status_text || 'Open for freelance & full-time work';
+    var lines = [(first ? 'Hi, I\u2019m ' + first : 'Hi there'), open];
+    var longest = lines.reduce(function (a, b) { return b.length > a.length ? b : a; }, '');
+    sizer.textContent = longest + '_ ';
+    clearTimeout(typerTimer);
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) { el.textContent = open; return; }
+    var li = 0, ci = 0, del = false;
+    (function tick() {
+      var full = lines[li], wait;
+      if (!del) {
+        ci++; el.textContent = full.slice(0, ci);
+        if (ci === full.length) { del = true; wait = li === 0 ? 1500 : 2600; } else wait = 55 + Math.random() * 35;
+      } else {
+        ci--; el.textContent = full.slice(0, ci);
+        if (ci === 0) { del = false; li = (li + 1) % lines.length; wait = 380; } else wait = 26;
+      }
+      typerTimer = setTimeout(tick, wait);
+    })();
+  }
+
   /* ---------- profile ---------- */
   function renderProfile(p) {
     if (!p) return;
     var set = function (id, v) { var el = document.getElementById(id); if (el && v) el.textContent = v; };
-    set('p-name', p.name); set('p-role', p.role); set('p-status', p.status_text);
+    set('p-name', p.name); set('p-role', p.role); set('p-status', p.status_text); startTyper(p);
     set('p-email', p.email); set('p-wa', p.whatsapp_display);
     document.getElementById('p-status-box').hidden = p.open_for_work === false;
     if (p.photo) document.getElementById('p-photo').innerHTML = '<img src="' + esc(p.photo) + '" alt="' + esc(p.name || '') + '">';
