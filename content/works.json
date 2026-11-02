@@ -280,7 +280,7 @@
       "title": "Analyze Your Health Lifestyle",
       "category": "presentation",
       "label": "Health Template",
-      "featured": false,
+      "featured": true,
       "placeholder": false,
       "cover": "images/uploads/tpl-1052-cover.webp",
       "gallery": [
@@ -305,7 +305,7 @@
       "title": "Blue Capital Investment",
       "category": "presentation",
       "label": "Finance Template",
-      "featured": false,
+      "featured": true,
       "placeholder": false,
       "cover": "images/uploads/tpl-1065-cover.webp",
       "gallery": [
