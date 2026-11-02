@@ -359,7 +359,7 @@
       "title": "Analyze Your Health Lifestyle",
       "category": "presentation",
       "label": "Health Template",
-      "featured": true,
+      "featured": false,
       "placeholder": false,
       "cover": "images/uploads/tpl-1052-cover.webp",
       "gallery": [
@@ -685,7 +685,7 @@
       "title": "Artena Private Investment Deck",
       "category": "presentation",
       "label": "Pitch Deck",
-      "featured": false,
+      "featured": true,
       "placeholder": false,
       "cover": "images/uploads/tpl-1005-cover.webp",
       "gallery": [
