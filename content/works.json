@@ -425,6 +425,143 @@
       "client": "",
       "duration": "",
       "description": "A dark logistics template with purple-to-pink gradients and strong photography. Built for supply chain, shipping, and e-commerce stories, with data cards, maps, and process tables. 18 unique slides, fully editable in PowerPoint."
+    },
+    {
+      "title": "Classiq Investor Pitch Deck",
+      "category": "presentation",
+      "label": "Pitch Deck",
+      "featured": false,
+      "placeholder": false,
+      "cover": "images/uploads/tpl-1001-cover.webp",
+      "gallery": [
+        "images/uploads/tpl-1001-01.webp",
+        "images/uploads/tpl-1001-02.webp",
+        "images/uploads/tpl-1001-03.webp",
+        "images/uploads/tpl-1001-04.webp",
+        "images/uploads/tpl-1001-05.webp",
+        "images/uploads/tpl-1001-06.webp",
+        "images/uploads/tpl-1001-07.webp",
+        "images/uploads/tpl-1001-08.webp"
+      ],
+      "platform": "",
+      "link": "",
+      "tools": "Powerpoint",
+      "role": "Graphic Designer",
+      "client": "",
+      "duration": "",
+      "description": "A dark, high-contrast investor deck that frames collectible cars as an alternative asset class. Red and black styling, comparison charts, and a clear acquire, hold, and compound model keep the investment story sharp. 15 slides, designed in PowerPoint."
+    },
+    {
+      "title": "Booma Seed Round Pitch Deck",
+      "category": "presentation",
+      "label": "Pitch Deck",
+      "featured": false,
+      "placeholder": false,
+      "cover": "images/uploads/tpl-1002-cover.webp",
+      "gallery": [
+        "images/uploads/tpl-1002-01.webp",
+        "images/uploads/tpl-1002-02.webp",
+        "images/uploads/tpl-1002-03.webp",
+        "images/uploads/tpl-1002-04.webp",
+        "images/uploads/tpl-1002-05.webp",
+        "images/uploads/tpl-1002-06.webp",
+        "images/uploads/tpl-1002-07.webp",
+        "images/uploads/tpl-1002-08.webp"
+      ],
+      "platform": "",
+      "link": "",
+      "tools": "Powerpoint",
+      "role": "Graphic Designer",
+      "client": "",
+      "duration": "",
+      "description": "A seed round deck for a requirements intelligence platform serving industrial engineering teams. A clear problem and solution flow, customer impact stats, traction, market map, and team slides, all in a confident purple system. 16 slides, designed in PowerPoint."
+    },
+    {
+      "title": "Neurocores Pitch Deck",
+      "category": "presentation",
+      "label": "Pitch Deck",
+      "featured": false,
+      "placeholder": false,
+      "cover": "images/uploads/tpl-1003-cover.webp",
+      "gallery": [
+        "images/uploads/tpl-1003-01.webp",
+        "images/uploads/tpl-1003-02.webp",
+        "images/uploads/tpl-1003-03.webp",
+        "images/uploads/tpl-1003-04.webp",
+        "images/uploads/tpl-1003-05.webp",
+        "images/uploads/tpl-1003-06.webp"
+      ],
+      "platform": "",
+      "link": "",
+      "tools": "Powerpoint",
+      "role": "Graphic Designer",
+      "client": "",
+      "duration": "",
+      "description": "A clean pitch deck for a digital infrastructure company serving mission-critical industries. A dark gradient cover opens into light, airy slides covering the problem, the unified platform, market size, business plan, and the funding ask. 6 slides, designed in PowerPoint."
+    },
+    {
+      "title": "NovaBoost Media Pitch Deck",
+      "category": "presentation",
+      "label": "Pitch Deck",
+      "featured": false,
+      "placeholder": false,
+      "cover": "images/uploads/tpl-1004-cover.webp",
+      "gallery": [
+        "images/uploads/tpl-1004-01.webp",
+        "images/uploads/tpl-1004-02.webp",
+        "images/uploads/tpl-1004-03.webp",
+        "images/uploads/tpl-1004-04.webp",
+        "images/uploads/tpl-1004-05.webp"
+      ],
+      "platform": "",
+      "link": "",
+      "tools": "Powerpoint",
+      "role": "Graphic Designer",
+      "client": "",
+      "duration": "",
+      "description": "A bold purple pitch deck for a social media and paid ads agency. Large stat callouts, a donut chart for the service mix, and a strong closing call to action make results easy to scan. 5 slides, designed in PowerPoint."
+    },
+    {
+      "title": "Artena Private Investment Deck",
+      "category": "presentation",
+      "label": "Pitch Deck",
+      "featured": false,
+      "placeholder": false,
+      "cover": "images/uploads/tpl-1005-cover.webp",
+      "gallery": [
+        "images/uploads/tpl-1005-01.webp",
+        "images/uploads/tpl-1005-02.webp",
+        "images/uploads/tpl-1005-03.webp",
+        "images/uploads/tpl-1005-04.webp",
+        "images/uploads/tpl-1005-05.webp"
+      ],
+      "platform": "",
+      "link": "",
+      "tools": "Powerpoint",
+      "role": "Graphic Designer",
+      "client": "",
+      "duration": "",
+      "description": "A soft, glass-style deck for a private DeFi investment club. Diagrams explain the delta-neutral strategy, with clean layouts for performance plans and the management fee structure. 5 slides, designed in PowerPoint."
+    },
+    {
+      "title": "Neura Edu Dengue Awareness Deck",
+      "category": "presentation",
+      "label": "Pitch Deck",
+      "featured": false,
+      "placeholder": false,
+      "cover": "images/uploads/tpl-1006-cover.webp",
+      "gallery": [
+        "images/uploads/tpl-1006-01.webp",
+        "images/uploads/tpl-1006-02.webp",
+        "images/uploads/tpl-1006-03.webp"
+      ],
+      "platform": "",
+      "link": "",
+      "tools": "Powerpoint",
+      "role": "Graphic Designer",
+      "client": "",
+      "duration": "",
+      "description": "A teal healthcare awareness deck about dengue. Headline stats, a world map, and chart slides turn global health data into a clear, approachable story. 3 slides, designed in PowerPoint."
     }
   ]
 }
