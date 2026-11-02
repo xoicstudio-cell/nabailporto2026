@@ -237,6 +237,10 @@ button { font: inherit; color: inherit; }
 .reel-btn .i-play { display: none; }
 .reel.paused .reel-btn .i-play { display: block; }
 .reel.paused .reel-btn .i-pause { display: none; }
+.reel-mute { right: 62px; }
+.reel-mute .i-on { display: none; }
+.reel.sound .reel-mute .i-on { display: block; }
+.reel.sound .reel-mute .i-off { display: none; }
 .more-row { display: flex; justify-content: center; margin-top: 40px; }
 /* flat mocks shown until a cover exists */
 .mock { width: 64%; }
@@ -519,16 +523,6 @@ dialog:fullscreen { width: 100%; height: 100%; border: 0; border-radius: 0; }
 </div>
 
 <main id="top">
-  <!-- WORK -->
-  <section class="wrap sec" id="work">
-    <div class="sec-head rv">
-      <div class="label">Selected work</div>
-      <h2 class="h2">Decks, social and brand.</h2>
-    </div>
-    <div class="boxes grid-work" id="grid"></div>
-    <div class="more-row"><a class="btn dark" href="#all-work">See all work <span id="all-count"></span><svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a></div>
-  </section>
-
   <!-- SHOWREEL -->
   <section class="wrap sec" id="showreel">
     <div class="sec-head rv">
@@ -538,13 +532,26 @@ dialog:fullscreen { width: 100%; height: 100%; border: 0; border-radius: 0; }
     <div class="reel" id="reel">
       <video id="reel-video" muted loop playsinline preload="none" poster="videos/showreel-poster.webp" aria-label="Showreel of presentation and pitch deck designs">
         <source src="videos/showreel.mp4" type="video/mp4">
-        <source src="videos/showreel.webm" type="video/webm">
       </video>
+      <button class="reel-btn reel-mute" id="reel-mute" type="button" aria-label="Turn sound on" aria-pressed="false">
+        <svg class="i-off" viewBox="0 0 16 16"><path d="M2 6h2.5L8 3v10L4.5 10H2z"/><path d="M10.5 6l3.5 4M14 6l-3.5 4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        <svg class="i-on" viewBox="0 0 16 16"><path d="M2 6h2.5L8 3v10L4.5 10H2z"/><path d="M10.5 5.5a3.5 3.5 0 0 1 0 5M12.3 3.8a6 6 0 0 1 0 8.4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+      </button>
       <button class="reel-btn" id="reel-btn" type="button" aria-label="Pause or play showreel">
         <svg class="i-pause" viewBox="0 0 16 16"><path d="M4 3h3v10H4zM9 3h3v10H9z"/></svg>
         <svg class="i-play" viewBox="0 0 16 16"><path d="M4 2.5v11l9-5.5z"/></svg>
       </button>
     </div>
+  </section>
+
+  <!-- WORK -->
+  <section class="wrap sec" id="work">
+    <div class="sec-head rv">
+      <div class="label">Selected work</div>
+      <h2 class="h2">Decks, social and brand.</h2>
+    </div>
+    <div class="boxes grid-work" id="grid"></div>
+    <div class="more-row"><a class="btn dark" href="#all-work">See all work <span id="all-count"></span><svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a></div>
   </section>
 
   <!-- SERVICES -->
@@ -819,6 +826,12 @@ dialog:fullscreen { width: 100%; height: 100%; border: 0; border-radius: 0; }
     function play() { if (userPaused || reduceMotion) return; var p = v.play(); if (p && p.catch) p.catch(function () {}); }
     v.addEventListener('play', setUi); v.addEventListener('pause', setUi); setUi();
     if (reduceMotion) { v.removeAttribute('autoplay'); box.classList.add('paused'); }
+    var mb = document.getElementById('reel-mute');
+    if (mb) mb.addEventListener('click', function () {
+      v.muted = !v.muted; box.classList.toggle('sound', !v.muted);
+      mb.setAttribute('aria-pressed', String(!v.muted)); mb.setAttribute('aria-label', v.muted ? 'Turn sound on' : 'Mute sound');
+      if (!v.muted && v.paused) { userPaused = false; v.play(); }
+    });
     btn.addEventListener('click', function () { if (v.paused) { userPaused = false; reduceMotion = false; v.play(); } else { userPaused = true; v.pause(); } });
     if ('IntersectionObserver' in window) {
       new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { if (v.preload === 'none') { v.preload = 'auto'; } play(); } else { v.pause(); } }); }, { threshold: 0.35 }).observe(box);
