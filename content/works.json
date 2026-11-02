@@ -4,7 +4,7 @@
       "title": "Elafine Demos",
       "category": "social",
       "label": "Social Media Post",
-      "featured": true,
+      "featured": false,
       "placeholder": false,
       "cover": "images/uploads/20261101174231-new-project-rpv4.webp",
       "gallery": [
@@ -42,7 +42,7 @@
       "title": "Financial Growth",
       "category": "presentation",
       "label": "Presentation",
-      "featured": true,
+      "featured": false,
       "placeholder": false,
       "cover": "images/uploads/20261101173911-financial-growth-klid.webp",
       "gallery": [
@@ -252,7 +252,7 @@
       "title": "Blame the Code Programmer",
       "category": "presentation",
       "label": "Technology Template",
-      "featured": false,
+      "featured": true,
       "placeholder": false,
       "cover": "images/uploads/tpl-802-cover.webp",
       "gallery": [
@@ -323,7 +323,7 @@
       "title": "Energy Startups Watch",
       "category": "presentation",
       "label": "Energy Template",
-      "featured": false,
+      "featured": true,
       "placeholder": false,
       "cover": "images/uploads/tpl-1046-cover.webp",
       "gallery": [
