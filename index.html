@@ -484,6 +484,25 @@ dialog:fullscreen { width: 100%; height: 100%; border: 0; border-radius: 0; }
 .c-skills { display: flex; flex-wrap: wrap; gap: 6px; }
 .c-info .btn.or { align-self: flex-start; margin-top: auto; }
 </style>
+<!-- Google Analytics 4 with Consent Mode v2 (default denied until visitor accepts) -->
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+(function(){var c=null;try{c=localStorage.getItem('xo-consent');}catch(e){}
+gtag('consent','default',{analytics_storage:c==='granted'?'granted':'denied',ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',wait_for_update:500});})();
+gtag('js', new Date());
+gtag('config', 'G-FGVY4SPSL5');
+</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FGVY4SPSL5"></script>
+<style>
+.ck{position:fixed;left:16px;bottom:16px;z-index:9999;max-width:360px;background:var(--surface);color:var(--fg);border:1px solid var(--line);border-radius:14px;padding:14px 16px;box-shadow:0 12px 40px rgba(0,0,0,.18);font-size:.875rem;line-height:1.45;display:none}
+.ck.show{display:block}
+.ck p{margin:0 0 10px;color:var(--muted)}
+.ck .row{display:flex;gap:8px}
+.ck button{font:inherit;font-weight:600;padding:7px 14px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--fg);cursor:pointer}
+.ck button.ok{background:var(--orange);border-color:var(--orange);color:var(--on-orange)}
+@media (max-width:480px){.ck{left:12px;right:12px;bottom:12px;max-width:none}}
+</style>
 </head>
 <body>
 
@@ -828,7 +847,7 @@ dialog:fullscreen { width: 100%; height: 100%; border: 0; border-radius: 0; }
     if (reduceMotion) { v.removeAttribute('autoplay'); box.classList.add('paused'); }
     var mb = document.getElementById('reel-mute');
     if (mb) mb.addEventListener('click', function () {
-      v.muted = !v.muted; box.classList.toggle('sound', !v.muted);
+      v.muted = !v.muted; box.classList.toggle('sound', !v.muted); if (!v.muted && window.gtag) gtag('event', 'showreel_unmute');
       mb.setAttribute('aria-pressed', String(!v.muted)); mb.setAttribute('aria-label', v.muted ? 'Turn sound on' : 'Mute sound');
       if (!v.muted && v.paused) { userPaused = false; v.play(); }
     });
@@ -1010,7 +1029,7 @@ dialog:fullscreen { width: 100%; height: 100%; border: 0; border-radius: 0; }
     document.getElementById('v-scroll').scrollTop = 0;
     noOrphans(dlg);
   }
-  function openWork(i) { if (!WORK.length) return; if (!dlg.open) { try { dlg.showModal(); } catch (e) { dlg.setAttribute('open', ''); } } show(i); }
+  function openWork(i) { if (!WORK.length) return; if (window.gtag && WORK[i]) gtag('event', 'work_open', { work_title: WORK[i].title }); if (!dlg.open) { try { dlg.showModal(); } catch (e) { dlg.setAttribute('open', ''); } } show(i); }
   function closeWork() { stopAuto(); if (document.fullscreenElement) document.exitFullscreen().catch(function () {}); dlg.close(); }
   [grid, gridAll].forEach(function (g) { g.addEventListener('click', function (e) { var b = e.target.closest('.work'); if (b) openWork(+b.getAttribute('data-i')); }); });
   more.addEventListener('click', function (e) { var b = e.target.closest('.v-card'); if (b) show(+b.getAttribute('data-i')); });
@@ -1140,6 +1159,19 @@ dialog:fullscreen { width: 100%; height: 100%; border: 0; border-radius: 0; }
     CERTS = (r[2] && r[2].items || []).filter(function (c) { return c && c.title; });
     renderWork(); renderCerts(); renderChips(); noOrphans();
   });
+})();
+</script>
+<div class="ck" id="ck" role="dialog" aria-live="polite" aria-label="Cookie consent">
+  <p>I use cookies (Google Analytics) to see how visitors use this site. No ads, no selling data.</p>
+  <div class="row"><button class="ok" id="ck-ok" type="button">Accept</button><button id="ck-no" type="button">Decline</button></div>
+</div>
+<script>
+(function(){
+  var box=document.getElementById('ck'),c=null;try{c=localStorage.getItem('xo-consent');}catch(e){}
+  if(!c) box.classList.add('show');
+  function set(v){try{localStorage.setItem('xo-consent',v);}catch(e){} gtag('consent','update',{analytics_storage:v}); box.classList.remove('show');}
+  document.getElementById('ck-ok').onclick=function(){set('granted');};
+  document.getElementById('ck-no').onclick=function(){set('denied');};
 })();
 </script>
 </body>
